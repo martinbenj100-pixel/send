@@ -1,0 +1,31 @@
+services:
+  - type: static
+    name: neonmail-pro
+    plan: free
+    buildCommand: npm install
+    staticPublishPath: .
+    routes:
+      - path: /
+        index: index.html
+        
+  - type: web
+    name: neonmail-api
+    plan: free
+    runtime: node
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: RESEND_API_KEY
+        scope: build,runtime
+      - key: PORT
+        value: "3000"
+    routes:
+      - path: /api
+        destination: /api
+
+# Pour déployer:
+# 1. Push ce fichier sur GitHub
+# 2. Va sur render.com
+# 3. Crée un projet "Render Blueprints"
+# 4. Sélectionne ton repo
+# 5. Render va lire render.yaml et déployer automatiquement
